@@ -26,7 +26,7 @@ public class centerPanel extends JPanel {
             buttonList.add(boardNumbers);
         }
 
-        Collections.shuffle(buttonList);
+       Collections.shuffle(buttonList);
         for (JButton b:buttonList) {
             add(b);
         }

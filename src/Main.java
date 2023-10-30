@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Main extends JFrame implements ActionListener {
     public static void main(String[] args) {
@@ -54,8 +56,13 @@ public class Main extends JFrame implements ActionListener {
     public void updateMoveCounter() {
         southPanel.moveCounter++;
         southPanel.moveCounterLabel.setText("Antal drag: " + southPanel.moveCounter);
-
     }
+
+    public ArrayList<JButton> shuffleGame(ArrayList<JButton> buttonlist) {
+        Collections.shuffle(buttonlist);
+        return buttonlist;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (isMoveOk(buttonPosition(e.getActionCommand(), centerPanel.dimensionArray))){
@@ -64,6 +71,28 @@ public class Main extends JFrame implements ActionListener {
             updateMoveCounter();
             if (checkIfWin.checkIfWinner2(centerPanel.dimensionArray)){
                 System.out.println("du vann");
+            }
+        }
+        if (e.getSource() == northPanel.newGameButton) {
+            shuffleGame(centerPanel.buttonList);
+            
+        }
+        if (e.getSource() == northPanel.changeColorOnNumbersButton) {
+            Color colorSelectorNumbers = JColorChooser.showDialog(null, "Välj en färg på spelbrickorna", Color.WHITE);
+            if (colorSelectorNumbers != null) {
+                Component[] comps = centerPanel.getComponents();
+                for (Component comp : comps) {
+                    if (comp instanceof JButton b) {
+                        b.setBackground(colorSelectorNumbers);
+                    }
+                }
+            }
+        }
+        if (e.getSource() == northPanel.changeColorOnGameButton) {
+            Color colorSelectorGame = JColorChooser.showDialog(null, "Välj en färg på spelplanen", Color.BLACK);
+            if (colorSelectorGame != null) {
+                centerPanel.setBackground(colorSelectorGame);
+                northPanel.setBackground(colorSelectorGame);
             }
         }
     }
