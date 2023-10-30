@@ -3,8 +3,6 @@ import java.util.ArrayList;
 
 public class checkIfWin {
 
-
-
     public static void main(String[] args) {
         centerPanel c = new centerPanel();
         JButton button1= new JButton("1");
