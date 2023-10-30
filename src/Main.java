@@ -3,7 +3,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 public class Main extends JFrame implements ActionListener {
@@ -66,9 +65,13 @@ public class Main extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (isMoveOk(buttonPosition(e.getActionCommand(), centerPanel.dimensionArray))) {
+        if (isMoveOk(buttonPosition(e.getActionCommand(), centerPanel.dimensionArray))){
             int[] clickedButtonPosition = convertStringToIntArray(buttonPosition(e.getActionCommand(), centerPanel.dimensionArray));
-            move1(clickedButtonPosition[0], clickedButtonPosition[1]);
+            move1(clickedButtonPosition[0],clickedButtonPosition[1]);
+            updateMoveCounter();
+            if (checkIfWin.checkIfWinner2(centerPanel.dimensionArray)){
+                System.out.println("du vann");
+            }
         }
         if (e.getSource() == northPanel.newGameButton) {
             shuffleGame(centerPanel.buttonList);
@@ -93,8 +96,6 @@ public class Main extends JFrame implements ActionListener {
             }
         }
     }
-
-
     public String buttonPosition(String buttonNumber, JButton[][] dimensionArray) {
         String searchString = buttonNumber;
 
@@ -113,26 +114,24 @@ public class Main extends JFrame implements ActionListener {
                 break;
             }
         }
-        return rowPosition + ":" + colPosition;
+        return rowPosition + ":"+ colPosition;
     }
-
-    public boolean isMoveOk(String clickedButtonPosition) {
+    public boolean isMoveOk(String clickedButtonPosition){
         boolean returnboolean = false;
 
         int[] clickedbuttonPositionParts = convertStringToIntArray(clickedButtonPosition);
         int[] blankButtonPosition = convertStringToIntArray(buttonPosition(" ", centerPanel.dimensionArray));
         if (clickedbuttonPositionParts[0] == (blankButtonPosition[0]) &&
                 (blankButtonPosition[1] == clickedbuttonPositionParts[1] + 1 ||
-                        blankButtonPosition[1] == clickedbuttonPositionParts[1] - 1)) {
+                blankButtonPosition[1] == clickedbuttonPositionParts[1] - 1 )) {
             returnboolean = true;
         } else if (clickedbuttonPositionParts[1] == (blankButtonPosition[1]) &&
                 (blankButtonPosition[0] == clickedbuttonPositionParts[0] + 1 ||
-                        blankButtonPosition[0] == clickedbuttonPositionParts[0] - 1)) {
+                blankButtonPosition[0] == clickedbuttonPositionParts[0] - 1 )) {
             returnboolean = true;
         }
         return returnboolean;
     }
-
     public static int[] convertStringToIntArray(String input) {
         String[] parts = input.split(":");
         int[] intArray = new int[parts.length];
@@ -143,8 +142,7 @@ public class Main extends JFrame implements ActionListener {
 
         return intArray;
     }
-
-    public void move1(int a, int b) {
+    public void move1(int a, int b){
         int[] blankButtonPosition = convertStringToIntArray(buttonPosition(" ", centerPanel.dimensionArray));
         centerPanel.dimensionArray[blankButtonPosition[0]][blankButtonPosition[1]].setText(centerPanel.dimensionArray[a][b].getText());
         centerPanel.dimensionArray[a][b].setText(" ");
