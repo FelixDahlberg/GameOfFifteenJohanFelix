@@ -1,0 +1,38 @@
+Index: src/centerPanel.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import javax.swing.*;\r\nimport java.awt.*;\r\nimport java.util.ArrayList;\r\nimport java.util.Collections;\r\n\r\npublic class centerPanel extends JPanel {\r\n    \r\n    int rows = 4;\r\n    int colums = 4;\r\n    JButton[][] dimensionArray = new JButton[rows][colums];\r\n    ArrayList<JButton> buttonList = new ArrayList<>();\r\n\r\n    public centerPanel() {\r\n        try {\r\n            UIManager.setLookAndFeel(\"javax.swing.plaf.nimbus.NimbusLookAndFeel\");\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n\r\n        setLayout(new GridLayout(4, 4));\r\n        \r\n        for (int i = 0; i < 16; i++) {\r\n            JButton boardNumbers = new JButton(String.valueOf(i + 1));\r\n            boardNumbers.setPreferredSize(new Dimension(80, 80));\r\n            buttonList.add(boardNumbers);\r\n        }\r\n\r\n       Collections.shuffle(buttonList);\r\n        for (JButton b:buttonList) {\r\n            add(b);\r\n        }\r\n\r\n        for (JButton b:buttonList) {\r\n            if(b.getText().equals(\"16\")){\r\n                b.setText(\" \");\r\n                b.setVisible(false);\r\n            }\r\n        }\r\n        \r\n        int numberOfButtons = 0;\r\n        for (int i = 0; i < rows; i++) {\r\n            for (int j = 0; j < colums; j++) {\r\n                dimensionArray[i][j] = buttonList.get(numberOfButtons);\r\n                numberOfButtons++;\r\n            }\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/centerPanel.java b/src/centerPanel.java
+--- a/src/centerPanel.java	(revision 670b70dccdf66f8c5ca759184a3328c10d7bbc96)
++++ b/src/centerPanel.java	(date 1698660991956)
+@@ -45,4 +45,26 @@
+             }
+         }
+     }
++    public void initializeButtons2(JButton[][] dimensionArray,ArrayList<JButton> buttonList) {
++
++        Collections.shuffle(buttonList);
++        for (JButton b : buttonList) {
++            add(b);
++        }
++
++        for (JButton b : buttonList) {
++            if (b.getText().equals(String.valueOf(rows * colums))) {
++                b.setText(" ");
++                b.setVisible(false);
++            }
++        }
++
++        int numberOfButtons = 0;
++        for (int i = 0; i < rows; i++) {
++            for (int j = 0; j < colums; j++) {
++                dimensionArray[i][j] = buttonList.get(numberOfButtons);
++                numberOfButtons++;
++            }
++        }
++    }
+ }
+\ No newline at end of file

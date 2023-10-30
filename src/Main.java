@@ -34,6 +34,7 @@ public class Main extends JFrame implements ActionListener {
                 centerPanel.dimensionArray[i][j].addActionListener(this);
             }
         }
+
         pack();
         setLocationRelativeTo(null);
         setResizable(false);
@@ -58,11 +59,13 @@ public class Main extends JFrame implements ActionListener {
             move1(clickedButtonPosition[0],clickedButtonPosition[1]);
             updateMoveCounter();
             if (checkIfWin.checkIfWinner2(centerPanel.dimensionArray)){
-                JOptionPane.showMessageDialog(null,"Grattis du vann!");
+                System.out.println("du vann");
             }
         }
         if (e.getSource() == northPanel.newGameButton) {
-           centerPanel.initializeButtons2(centerPanel.dimensionArray, centerPanel.buttonList);
+            centerPanel.initializeButtons2(centerPanel.dimensionArray, centerPanel.buttonList);
+            southPanel.seconds = 0;
+            southPanel.moveCounter = 0;
         }
         if (e.getSource() == northPanel.changeColorOnNumbersButton) {
             Color colorSelectorNumbers = JColorChooser.showDialog(null, "Välj en färg på spelbrickorna", Color.WHITE);
