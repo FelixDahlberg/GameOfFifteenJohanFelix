@@ -7,8 +7,8 @@ import java.util.Collections;
 public class centerPanel extends JPanel {
 
 
-    int rows = 5;
-    int colums = 5;
+    int rows = 3;
+    int colums = 3;
     JButton[][] dimensionArray = new JButton[rows][colums];
     ArrayList<JButton> buttonList = new ArrayList<>();
 

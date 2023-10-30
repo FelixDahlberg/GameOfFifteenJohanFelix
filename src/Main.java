@@ -34,7 +34,6 @@ public class Main extends JFrame implements ActionListener {
                 centerPanel.dimensionArray[i][j].addActionListener(this);
             }
         }
-
         pack();
         setLocationRelativeTo(null);
         setResizable(false);
