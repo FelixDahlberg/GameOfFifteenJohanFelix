@@ -28,23 +28,12 @@ public class Main extends JFrame implements ActionListener {
 
         southPanel.timer.start();
 
-        centerPanel.dimensionArray[0][0].addActionListener(this);
-        centerPanel.dimensionArray[0][1].addActionListener(this);
-        centerPanel.dimensionArray[0][2].addActionListener(this);
-        centerPanel.dimensionArray[0][3].addActionListener(this);
-        centerPanel.dimensionArray[1][0].addActionListener(this);
-        centerPanel.dimensionArray[1][1].addActionListener(this);
-        centerPanel.dimensionArray[1][2].addActionListener(this);
-        centerPanel.dimensionArray[1][3].addActionListener(this);
-        centerPanel.dimensionArray[2][0].addActionListener(this);
-        centerPanel.dimensionArray[2][1].addActionListener(this);
-        centerPanel.dimensionArray[2][2].addActionListener(this);
-        centerPanel.dimensionArray[2][3].addActionListener(this);
-        centerPanel.dimensionArray[3][0].addActionListener(this);
-        centerPanel.dimensionArray[3][1].addActionListener(this);
-        centerPanel.dimensionArray[3][2].addActionListener(this);
-        centerPanel.dimensionArray[3][3].addActionListener(this);
-
+        int gridSize = centerPanel.dimensionArray.length;
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                centerPanel.dimensionArray[i][j].addActionListener(this);
+            }
+        }
 
         pack();
         setLocationRelativeTo(null);
@@ -70,7 +59,7 @@ public class Main extends JFrame implements ActionListener {
             move1(clickedButtonPosition[0],clickedButtonPosition[1]);
             updateMoveCounter();
             if (checkIfWin.checkIfWinner2(centerPanel.dimensionArray)){
-                System.out.println("du vann");
+                JOptionPane.showMessageDialog(null,"Grattis du vann!");
             }
         }
         if (e.getSource() == northPanel.newGameButton) {
