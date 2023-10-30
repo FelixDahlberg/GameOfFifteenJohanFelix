@@ -5,7 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5dd2a778-8f10-4e56-81bf-8ee08aeb3442" name="Changes" comment="first puch">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/centerPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/centerPanel.java" afterDir="false" />
+    </list>
+    <list id="66dca3bb-2c96-45b4-a395-5d335f3b7e11" name="Changes by felix" comment="">
+      <change beforePath="$PROJECT_DIR$/src/centerPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/centerPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,10 +23,18 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="FelixDevelopment" />
+        <entry key="$PROJECT_DIR$" value="development" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/src/centerPanel.java">
+      <ranges>
+        <range start1="20" end1="20" start2="20" end2="22" changelist="5dd2a778-8f10-4e56-81bf-8ee08aeb3442" />
+        <range start1="47" end1="47" start2="49" end2="71" changelist="66dca3bb-2c96-45b4-a395-5d335f3b7e11" />
+      </ranges>
+    </file>
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
@@ -37,7 +50,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;development&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Johans-branch&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/felix/IdeaProjects/GameOfFifteenJohanFelix/src&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -61,6 +74,8 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
@@ -97,7 +112,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/Main.java</url>
-          <line>66</line>
+          <line>77</line>
           <properties class="Main" method="actionPerformed">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
