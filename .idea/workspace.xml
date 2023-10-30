@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5dd2a778-8f10-4e56-81bf-8ee08aeb3442" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-    </list>
+    <list default="true" id="5dd2a778-8f10-4e56-81bf-8ee08aeb3442" name="Changes" comment="Adderade changeColorOnGame/changeColorOnNumbers" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -68,6 +65,14 @@
       <updated>1698653543568</updated>
       <workItem from="1698653544719" duration="313000" />
     </task>
+    <task id="LOCAL−00001" summary="Adderade changeColorOnGame/changeColorOnNumbers">
+      <option name="closed" value="true" />
+      <created>1698655533383</created>
+      <option name="number" value="LOCAL−00001" />
+      <option name="presentableId" value="LOCAL−00001" />
+      <updated>1698655533383</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -86,6 +91,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="no comment" />
-    <option name="LAST_COMMIT_MESSAGE" value="no comment" />
+    <MESSAGE value="Adderade changeColorOnGame/changeColorOnNumbers" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adderade changeColorOnGame/changeColorOnNumbers" />
   </component>
 </project>
