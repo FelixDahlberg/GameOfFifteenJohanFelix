@@ -62,8 +62,7 @@ public class Main extends JFrame implements ActionListener {
             }
         }
         if (e.getSource() == northPanel.newGameButton) {
-            shuffleGame(centerPanel.buttonList);
-            
+           centerPanel.initializeButtons2(centerPanel.dimensionArray, centerPanel.buttonList);
         }
         if (e.getSource() == northPanel.changeColorOnNumbersButton) {
             Color colorSelectorNumbers = JColorChooser.showDialog(null, "Välj en färg på spelbrickorna", Color.WHITE);

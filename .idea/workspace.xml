@@ -20,7 +20,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="FelixDevelopment" />
+        <entry key="$PROJECT_DIR$" value="development" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -39,7 +39,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "development",
+    "git-widget-placeholder": "FelixDevelopment",
     "last_opened_file_path": "C:/Users/felix/IdeaProjects/GameOfFifteenJohanFelix/src",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
