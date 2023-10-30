@@ -54,12 +54,17 @@ public class Main extends JFrame implements ActionListener {
     public void updateMoveCounter() {
         southPanel.moveCounter++;
         southPanel.moveCounterLabel.setText("Antal drag: " + southPanel.moveCounter);
+
     }
     @Override
     public void actionPerformed(ActionEvent e) {
         if (isMoveOk(buttonPosition(e.getActionCommand(), centerPanel.dimensionArray))){
             int[] clickedButtonPosition = convertStringToIntArray(buttonPosition(e.getActionCommand(), centerPanel.dimensionArray));
             move1(clickedButtonPosition[0],clickedButtonPosition[1]);
+            updateMoveCounter();
+            if (checkIfWin.checkIfWinner2(centerPanel.dimensionArray)){
+                System.out.println("du vann");
+            }
         }
     }
     public String buttonPosition(String buttonNumber, JButton[][] dimensionArray) {
