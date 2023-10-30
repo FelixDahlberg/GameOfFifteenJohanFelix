@@ -47,11 +47,6 @@ public class Main extends JFrame implements ActionListener {
         southPanel.moveCounterLabel.setText("Antal drag: " + southPanel.moveCounter);
     }
 
-    public ArrayList<JButton> shuffleGame(ArrayList<JButton> buttonlist) {
-        Collections.shuffle(buttonlist);
-        return buttonlist;
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (isMoveOk(buttonPosition(e.getActionCommand(), centerPanel.dimensionArray))){
