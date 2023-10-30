@@ -1,14 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class centerPanel extends JPanel {
-
-
-    int rows = 3;
-    int colums = 3;
+    
+    int rows = 4;
+    int colums = 4;
     JButton[][] dimensionArray = new JButton[rows][colums];
     ArrayList<JButton> buttonList = new ArrayList<>();
 
@@ -19,9 +17,9 @@ public class centerPanel extends JPanel {
             e.printStackTrace();
         }
 
-        setLayout(new GridLayout(rows, colums));
+        setLayout(new GridLayout(4, 4));
         
-        for (int i = 0; i < (rows * colums); i++) {
+        for (int i = 0; i < 16; i++) {
             JButton boardNumbers = new JButton(String.valueOf(i + 1));
             boardNumbers.setPreferredSize(new Dimension(80, 80));
             buttonList.add(boardNumbers);
@@ -39,6 +37,28 @@ public class centerPanel extends JPanel {
             }
         }
         
+        int numberOfButtons = 0;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < colums; j++) {
+                dimensionArray[i][j] = buttonList.get(numberOfButtons);
+                numberOfButtons++;
+            }
+        }
+    }
+    public void initializeButtons2(JButton[][] dimensionArray,ArrayList<JButton> buttonList) {
+
+        Collections.shuffle(buttonList);
+        for (JButton b : buttonList) {
+            add(b);
+        }
+
+        for (JButton b : buttonList) {
+            if (b.getText().equals(String.valueOf(rows * colums))) {
+                b.setText(" ");
+                b.setVisible(false);
+            }
+        }
+
         int numberOfButtons = 0;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < colums; j++) {
