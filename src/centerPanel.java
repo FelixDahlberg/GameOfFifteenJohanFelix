@@ -17,7 +17,7 @@ public class centerPanel extends JPanel {
             e.printStackTrace();
         }
 
-        setLayout(new GridLayout(4, 4));
+        setLayout(new GridLayout(rows, colums));
         
         for (int i = 0; i < 16; i++) {
             JButton boardNumbers = new JButton(String.valueOf(i + 1));
