@@ -3,25 +3,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class northPanel extends JPanel implements ActionListener {
-    
-    JButton newGameButton = new JButton("New Game"); 
+
+    JButton newGameButton = new JButton("New Game");
     JButton chngeSizeOnGame = new JButton("Byt storlek på spelplanen");
-    JButton changeColorOnNumbersButton = new JButton("Byt färg på spelbrickorna"); 
-    JButton changeColorOnGameButton = new JButton("Byt färg på spelaplanen"); 
-    
+    JButton changeColorOnNumbersButton = new JButton("Byt färg på spelbrickorna");
+    JButton changeColorOnGameButton = new JButton("Byt färg på spelaplanen");
+
     JButton exitButton = new JButton("Exit");
-    northPanel(){
-        add(newGameButton); 
+
+    northPanel() {
+        add(newGameButton);
         add(chngeSizeOnGame);
-        add(changeColorOnNumbersButton); 
-        add(changeColorOnGameButton); 
-        add(exitButton); 
-        exitButton.addActionListener(this); 
+        add(changeColorOnNumbersButton);
+        add(changeColorOnGameButton);
+        add(exitButton);
+        exitButton.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == exitButton){
+        if (e.getSource() == exitButton) {
             System.exit(0);
         }
     }

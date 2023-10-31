@@ -24,6 +24,7 @@ public class checkIfWin {
         }
         return returnBoolean;
     }
+
     public static JButton[][] copyJButtonArray(JButton[][] originalArray) {
         int rows = originalArray.length;
         int columns = originalArray[0].length;

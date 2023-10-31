@@ -9,18 +9,18 @@ public class southPanel extends JPanel {
     Timer timer;
 
     int seconds = 0;
-    
-    southPanel(){
-        
+
+    southPanel() {
+
         add(moveCounterLabel);
         add(timerLabel);
-        
+
         timer = new Timer(1000, e -> {
-            
-                seconds++;
-                timerLabel.setText("Timer: " + seconds);
-            
+
+            seconds++;
+            timerLabel.setText("Timer: " + seconds);
+
         });
-        
+
     }
 }
