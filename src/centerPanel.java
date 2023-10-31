@@ -5,8 +5,8 @@ import java.util.Collections;
 
 public class centerPanel extends JPanel {
     
-    int rows = 4;
-    int colums = 4;
+    int rows = 5;
+    int colums = 5;
     JButton[][] dimensionArray = new JButton[rows][colums];
     ArrayList<JButton> buttonList = new ArrayList<>();
 
@@ -17,9 +17,9 @@ public class centerPanel extends JPanel {
             e.printStackTrace();
         }
 
-        setLayout(new GridLayout(4, 4));
+        setLayout(new GridLayout(rows, colums));
         
-        for (int i = 0; i < 16; i++) {
+        for (int i = 0; i < (rows * colums); i++) {
             JButton boardNumbers = new JButton(String.valueOf(i + 1));
             boardNumbers.setPreferredSize(new Dimension(80, 80));
             buttonList.add(boardNumbers);
