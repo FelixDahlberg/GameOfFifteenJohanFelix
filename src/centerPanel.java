@@ -24,28 +24,9 @@ public class centerPanel extends JPanel {
             boardNumbers.setPreferredSize(new Dimension(80, 80));
             buttonList.add(boardNumbers);
         }
-
-       Collections.shuffle(buttonList);
-        for (JButton b:buttonList) {
-            add(b);
-        }
-
-        for (JButton b:buttonList) {
-            if(b.getText().equals(String.valueOf(rows * colums))){
-                b.setText(" ");
-                b.setVisible(false);
-            }
-        }
-        
-        int numberOfButtons = 0;
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < colums; j++) {
-                dimensionArray[i][j] = buttonList.get(numberOfButtons);
-                numberOfButtons++;
-            }
-        }
+        initializeButtons(dimensionArray, buttonList);
     }
-    public void initializeButtons2(JButton[][] dimensionArray,ArrayList<JButton> buttonList) {
+    public void initializeButtons(JButton[][] dimensionArray,ArrayList<JButton> buttonList) {
 
         Collections.shuffle(buttonList);
         for (JButton b : buttonList) {

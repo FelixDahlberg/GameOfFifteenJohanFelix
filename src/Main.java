@@ -23,7 +23,7 @@ public class Main extends JFrame implements ActionListener {
         add(southPanel, BorderLayout.SOUTH);
 
         northPanel.newGameButton.addActionListener(this);
-        northPanel.chngeSizeOnGame.addActionListener(this);
+        northPanel.changeSizeOnGame.addActionListener(this);
         northPanel.changeColorOnGameButton.addActionListener(this);
         northPanel.changeColorOnNumbersButton.addActionListener(this);
 
@@ -43,27 +43,27 @@ public class Main extends JFrame implements ActionListener {
     }
 
     public void updateMoveCounter() {
-        southPanel.moveCounter++;
-        southPanel.moveCounterLabel.setText("Antal drag: " + southPanel.moveCounter);
+        southPanel.setMoveCounter(southPanel.getMoveCounter() + 1);
+        southPanel.moveCounterLabel.setText("Antal drag: " + southPanel.getMoveCounter());
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (isMoveOk(buttonPosition(e.getActionCommand(), centerPanel.dimensionArray))){
             int[] clickedButtonPosition = convertStringToIntArray(buttonPosition(e.getActionCommand(), centerPanel.dimensionArray));
-            move1(clickedButtonPosition[0],clickedButtonPosition[1]);
+            moveButton(clickedButtonPosition[0],clickedButtonPosition[1]);
             updateMoveCounter();
             if (checkIfWin.checkIfWinner2(centerPanel.dimensionArray)){
-                System.out.println("du vann");
+                JOptionPane.showMessageDialog(null, "Grattis, du vann!");
             }
         }
         if (e.getSource() == northPanel.newGameButton) {
-            centerPanel.initializeButtons2(centerPanel.dimensionArray, centerPanel.buttonList);
-            southPanel.seconds = 0;
-            southPanel.moveCounter = 0;
+            centerPanel.initializeButtons(centerPanel.dimensionArray, centerPanel.buttonList);
+            southPanel.setSeconds(0);
+            southPanel.setMoveCounter(0);
         }
         
-        if (e.getSource() == northPanel.chngeSizeOnGame){
+        if (e.getSource() == northPanel.changeSizeOnGame){
             
         }
         if (e.getSource() == northPanel.changeColorOnNumbersButton) {
@@ -103,9 +103,10 @@ public class Main extends JFrame implements ActionListener {
                 break;
             }
         }
-        return rowPosition + ":"+ colPosition;
+        return rowPosition + ":" + colPosition;
     }
-    public boolean isMoveOk(String clickedButtonPosition){
+
+    public boolean isMoveOk(String clickedButtonPosition) {
         boolean returnboolean = false;
 
         int[] clickedbuttonPositionParts = convertStringToIntArray(clickedButtonPosition);
@@ -131,7 +132,7 @@ public class Main extends JFrame implements ActionListener {
 
         return intArray;
     }
-    public void move1(int a, int b){
+    public void moveButton(int a, int b){
         int[] blankButtonPosition = convertStringToIntArray(buttonPosition(" ", centerPanel.dimensionArray));
         centerPanel.dimensionArray[blankButtonPosition[0]][blankButtonPosition[1]].setText(centerPanel.dimensionArray[a][b].getText());
         centerPanel.dimensionArray[a][b].setText(" ");

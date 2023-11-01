@@ -5,14 +5,15 @@ import java.awt.event.ActionListener;
 public class northPanel extends JPanel implements ActionListener {
     
     JButton newGameButton = new JButton("New Game");
-    JButton chngeSizeOnGame = new JButton("Byt storlek på spelplanen");
-    JButton changeColorOnNumbersButton = new JButton("Byt färg på brickorna");
+    JButton changeSizeOnGame = new JButton("Byt storlek på spelplanen");
+    JButton changeColorOnNumbersButton = new JButton("Byt färg på spelbrickorna");
     JButton changeColorOnGameButton = new JButton("Byt färg på spelaplanen");
-    
+
     JButton exitButton = new JButton("Exit");
-    northPanel(){
+
+    northPanel() {
         add(newGameButton);
-        add(chngeSizeOnGame);
+        add(changeSizeOnGame);
         add(changeColorOnNumbersButton);
         add(changeColorOnGameButton);
         add(exitButton);
@@ -21,7 +22,7 @@ public class northPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == exitButton){
+        if (e.getSource() == exitButton) {
             System.exit(0);
         }
     }
