@@ -1,0 +1,80 @@
+Index: src/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import javax.swing.*;\r\nimport java.awt.*;\r\nimport java.awt.event.ActionEvent;\r\nimport java.awt.event.ActionListener;\r\nimport java.util.ArrayList;\r\nimport java.util.Collections;\r\n\r\npublic class Main extends JFrame implements ActionListener {\r\n    public static void main(String[] args) {\r\n        new Main();\r\n    }\r\n\r\n    northPanel northPanel = new northPanel();\r\n    centerPanel centerPanel = new centerPanel();\r\n    southPanel southPanel = new southPanel();\r\n\r\n\r\n    Main() {\r\n        setTitle(\"Game Of Fifteen\");\r\n        setLayout(new BorderLayout());\r\n        add(northPanel, BorderLayout.NORTH);\r\n        add(centerPanel, BorderLayout.CENTER);\r\n        add(southPanel, BorderLayout.SOUTH);\r\n\r\n        northPanel.newGameButton.addActionListener(this);\r\n        northPanel.chngeSizeOnGame.addActionListener(this);\r\n        northPanel.changeColorOnGameButton.addActionListener(this);\r\n        northPanel.changeColorOnNumbersButton.addActionListener(this);\r\n\r\n        southPanel.timer.start();\r\n\r\n        int gridSize = centerPanel.dimensionArray.length;\r\n        for (int i = 0; i < gridSize; i++) {\r\n            for (int j = 0; j < gridSize; j++) {\r\n                centerPanel.dimensionArray[i][j].addActionListener(this);\r\n            }\r\n        }\r\n\r\n        pack();\r\n        setLocationRelativeTo(null);\r\n        setResizable(false);\r\n        setDefaultCloseOperation(EXIT_ON_CLOSE);\r\n        setVisible(true);\r\n    }\r\n\r\n    public void updateMoveCounter() {\r\n        southPanel.moveCounter++;\r\n        southPanel.moveCounterLabel.setText(\"Antal drag: \" + southPanel.moveCounter);\r\n    }\r\n\r\n    @Override\r\n    public void actionPerformed(ActionEvent e) {\r\n        if (isMoveOk(buttonPosition(e.getActionCommand(), centerPanel.dimensionArray))) {\r\n            int[] clickedButtonPosition = convertStringToIntArray(buttonPosition(e.getActionCommand(), centerPanel.dimensionArray));\r\n            move1(clickedButtonPosition[0], clickedButtonPosition[1]);\r\n            updateMoveCounter();\r\n            if (checkIfWin.checkIfWinner2(centerPanel.dimensionArray)) {\r\n                System.out.println(\"du vann\");\r\n            }\r\n        }\r\n        if (e.getSource() == northPanel.newGameButton) {\r\n            centerPanel.initializeButtons2(centerPanel.dimensionArray, centerPanel.buttonList);\r\n            southPanel.seconds = 0;\r\n            southPanel.moveCounter = 0;\r\n        }\r\n\r\n        if (e.getSource() == northPanel.chngeSizeOnGame) {\r\n\r\n        }\r\n        if (e.getSource() == northPanel.changeColorOnNumbersButton) {\r\n            Color colorSelectorNumbers = JColorChooser.showDialog(null, \"Välj en färg på spelbrickorna\", Color.WHITE);\r\n            if (colorSelectorNumbers != null) {\r\n                Component[] comps = centerPanel.getComponents();\r\n                for (Component comp : comps) {\r\n                    if (comp instanceof JButton b) {\r\n                        b.setBackground(colorSelectorNumbers);\r\n                    }\r\n                }\r\n            }\r\n        }\r\n        if (e.getSource() == northPanel.changeColorOnGameButton) {\r\n            Color colorSelectorGame = JColorChooser.showDialog(null, \"Välj en färg på spelplanen\", Color.BLACK);\r\n            if (colorSelectorGame != null) {\r\n                centerPanel.setBackground(colorSelectorGame);\r\n                northPanel.setBackground(colorSelectorGame);\r\n            }\r\n        }\r\n    }\r\n\r\n    public String buttonPosition(String buttonNumber, JButton[][] dimensionArray) {\r\n        String searchString = buttonNumber;\r\n\r\n        int rowPosition = -1;\r\n        int colPosition = -1;\r\n\r\n        for (int i = 0; i < dimensionArray.length; i++) {\r\n            for (int j = 0; j < dimensionArray[i].length; j++) {\r\n                if (dimensionArray[i][j].getText().equals(searchString)) {\r\n                    rowPosition = i;\r\n                    colPosition = j;\r\n                    break;\r\n                }\r\n            }\r\n            if (rowPosition != -1) {\r\n                break;\r\n            }\r\n        }\r\n        return rowPosition + \":\" + colPosition;\r\n    }\r\n\r\n    public boolean isMoveOk(String clickedButtonPosition) {\r\n        boolean returnboolean = false;\r\n\r\n        int[] clickedbuttonPositionParts = convertStringToIntArray(clickedButtonPosition);\r\n        int[] blankButtonPosition = convertStringToIntArray(buttonPosition(\" \", centerPanel.dimensionArray));\r\n        if (clickedbuttonPositionParts[0] == (blankButtonPosition[0]) &&\r\n                (blankButtonPosition[1] == clickedbuttonPositionParts[1] + 1 ||\r\n                        blankButtonPosition[1] == clickedbuttonPositionParts[1] - 1)) {\r\n            returnboolean = true;\r\n        } else if (clickedbuttonPositionParts[1] == (blankButtonPosition[1]) &&\r\n                (blankButtonPosition[0] == clickedbuttonPositionParts[0] + 1 ||\r\n                        blankButtonPosition[0] == clickedbuttonPositionParts[0] - 1)) {\r\n            returnboolean = true;\r\n        }\r\n        return returnboolean;\r\n    }\r\n\r\n    public static int[] convertStringToIntArray(String input) {\r\n        String[] parts = input.split(\":\");\r\n        int[] intArray = new int[parts.length];\r\n\r\n        for (int i = 0; i < parts.length; i++) {\r\n            intArray[i] = Integer.parseInt(parts[i]);\r\n        }\r\n\r\n        return intArray;\r\n    }\r\n\r\n    public void move1(int a, int b) {\r\n        int[] blankButtonPosition = convertStringToIntArray(buttonPosition(\" \", centerPanel.dimensionArray));\r\n        centerPanel.dimensionArray[blankButtonPosition[0]][blankButtonPosition[1]].setText(centerPanel.dimensionArray[a][b].getText());\r\n        centerPanel.dimensionArray[a][b].setText(\" \");\r\n        centerPanel.dimensionArray[a][b].setVisible(false);\r\n        centerPanel.dimensionArray[blankButtonPosition[0]][blankButtonPosition[1]].setVisible(true);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Main.java b/src/Main.java
+--- a/src/Main.java	(revision 8a1ee41710c0f7b314d37471dc69236bcc91cf01)
++++ b/src/Main.java	(date 1698825659286)
+@@ -55,7 +55,7 @@
+             move1(clickedButtonPosition[0], clickedButtonPosition[1]);
+             updateMoveCounter();
+             if (checkIfWin.checkIfWinner2(centerPanel.dimensionArray)) {
+-                System.out.println("du vann");
++                JOptionPane.showMessageDialog(null, "Grattis du vann!");
+             }
+         }
+         if (e.getSource() == northPanel.newGameButton) {
+Index: src/centerPanel.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import javax.swing.*;\r\nimport java.awt.*;\r\nimport java.util.ArrayList;\r\nimport java.util.Collections;\r\n\r\npublic class centerPanel extends JPanel {\r\n\r\n    int rows = 4;\r\n    int colums = 4;\r\n    JButton[][] dimensionArray = new JButton[rows][colums];\r\n    ArrayList<JButton> buttonList = new ArrayList<>();\r\n\r\n    public centerPanel() {\r\n        try {\r\n            UIManager.setLookAndFeel(\"javax.swing.plaf.nimbus.NimbusLookAndFeel\");\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n\r\n        setLayout(new GridLayout(rows, colums));\r\n\r\n        for (int i = 0; i < 16; i++) {\r\n            JButton boardNumbers = new JButton(String.valueOf(i + 1));\r\n            boardNumbers.setPreferredSize(new Dimension(80, 80));\r\n            buttonList.add(boardNumbers);\r\n        }\r\n\r\n        //Collections.shuffle(buttonList);\r\n        for (JButton b : buttonList) {\r\n            add(b);\r\n        }\r\n\r\n        for (JButton b : buttonList) {\r\n            if (b.getText().equals(String.valueOf(rows * colums))) {\r\n                b.setText(\" \");\r\n                b.setVisible(false);\r\n            }\r\n        }\r\n\r\n        int numberOfButtons = 0;\r\n        for (int i = 0; i < rows; i++) {\r\n            for (int j = 0; j < colums; j++) {\r\n                dimensionArray[i][j] = buttonList.get(numberOfButtons);\r\n                numberOfButtons++;\r\n            }\r\n        }\r\n    }\r\n\r\n    public void initializeButtons2(JButton[][] dimensionArray, ArrayList<JButton> buttonList) {\r\n\r\n        Collections.shuffle(buttonList);\r\n        for (JButton b : buttonList) {\r\n            add(b);\r\n        }\r\n\r\n        for (JButton b : buttonList) {\r\n            if (b.getText().equals(String.valueOf(rows * colums))) {\r\n                b.setText(\" \");\r\n                b.setVisible(false);\r\n            }\r\n        }\r\n\r\n        int numberOfButtons = 0;\r\n        for (int i = 0; i < rows; i++) {\r\n            for (int j = 0; j < colums; j++) {\r\n                dimensionArray[i][j] = buttonList.get(numberOfButtons);\r\n                numberOfButtons++;\r\n            }\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/centerPanel.java b/src/centerPanel.java
+--- a/src/centerPanel.java	(revision 8a1ee41710c0f7b314d37471dc69236bcc91cf01)
++++ b/src/centerPanel.java	(date 1698825621883)
+@@ -4,7 +4,7 @@
+ import java.util.Collections;
+ 
+ public class centerPanel extends JPanel {
+-
++    
+     int rows = 4;
+     int colums = 4;
+     JButton[][] dimensionArray = new JButton[rows][colums];
+@@ -18,25 +18,25 @@
+         }
+ 
+         setLayout(new GridLayout(rows, colums));
+-
++        
+         for (int i = 0; i < 16; i++) {
+             JButton boardNumbers = new JButton(String.valueOf(i + 1));
+             boardNumbers.setPreferredSize(new Dimension(80, 80));
+             buttonList.add(boardNumbers);
+         }
+ 
+-        //Collections.shuffle(buttonList);
+-        for (JButton b : buttonList) {
++       Collections.shuffle(buttonList);
++        for (JButton b:buttonList) {
+             add(b);
+         }
+ 
+-        for (JButton b : buttonList) {
+-            if (b.getText().equals(String.valueOf(rows * colums))) {
++        for (JButton b:buttonList) {
++            if(b.getText().equals(String.valueOf(rows * colums))){
+                 b.setText(" ");
+                 b.setVisible(false);
+             }
+         }
+-
++        
+         int numberOfButtons = 0;
+         for (int i = 0; i < rows; i++) {
+             for (int j = 0; j < colums; j++) {
+@@ -45,8 +45,7 @@
+             }
+         }
+     }
+-
+-    public void initializeButtons2(JButton[][] dimensionArray, ArrayList<JButton> buttonList) {
++    public void initializeButtons2(JButton[][] dimensionArray,ArrayList<JButton> buttonList) {
+ 
+         Collections.shuffle(buttonList);
+         for (JButton b : buttonList) {

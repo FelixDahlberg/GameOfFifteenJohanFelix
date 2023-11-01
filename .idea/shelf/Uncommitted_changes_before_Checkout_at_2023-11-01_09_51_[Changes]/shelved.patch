@@ -1,0 +1,400 @@
+Index: src/northPanel.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import javax.swing.*;\r\nimport java.awt.event.ActionEvent;\r\nimport java.awt.event.ActionListener;\r\n\r\npublic class northPanel extends JPanel implements ActionListener {\r\n    \r\n    JButton newGameButton = new JButton(\"New Game\");\r\n    JButton chngeSizeOnGame = new JButton(\"Byt storlek på spelplanen\");\r\n    JButton changeColorOnNumbersButton = new JButton(\"Byt färg på brickorna\");\r\n    JButton changeColorOnGameButton = new JButton(\"Byt färg på spelaplanen\");\r\n    \r\n    JButton exitButton = new JButton(\"Exit\");\r\n    northPanel(){\r\n        add(newGameButton);\r\n        add(chngeSizeOnGame);\r\n        add(changeColorOnNumbersButton);\r\n        add(changeColorOnGameButton);\r\n        add(exitButton);\r\n        exitButton.addActionListener(this);\r\n    }\r\n\r\n    @Override\r\n    public void actionPerformed(ActionEvent e) {\r\n        if(e.getSource() == exitButton){\r\n            System.exit(0);\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/northPanel.java b/src/northPanel.java
+--- a/src/northPanel.java	(revision bf5abd8cfd5b63c8a2d95ef861f458f8d7774150)
++++ b/src/northPanel.java	(date 1698828095811)
+@@ -1,9 +1,9 @@
+ import javax.swing.*;
++import java.awt.*;
+ import java.awt.event.ActionEvent;
+ import java.awt.event.ActionListener;
+ 
+ public class northPanel extends JPanel implements ActionListener {
+-    
+     JButton newGameButton = new JButton("New Game");
+     JButton chngeSizeOnGame = new JButton("Byt storlek på spelplanen");
+     JButton changeColorOnNumbersButton = new JButton("Byt färg på brickorna");
+@@ -17,6 +17,7 @@
+         add(changeColorOnGameButton);
+         add(exitButton);
+         exitButton.addActionListener(this);
++        
+     }
+ 
+     @Override
+Index: src/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import javax.swing.*;\r\nimport java.awt.*;\r\nimport java.awt.event.ActionEvent;\r\nimport java.awt.event.ActionListener;\r\nimport java.util.ArrayList;\r\nimport java.util.Collections;\r\n\r\npublic class Main extends JFrame implements ActionListener {\r\n    public static void main(String[] args) {\r\n        new Main();\r\n    }\r\n\r\n    northPanel northPanel = new northPanel();\r\n    centerPanel centerPanel = new centerPanel();\r\n    southPanel southPanel = new southPanel();\r\n\r\n\r\n    Main() {\r\n        setTitle(\"Game Of Fifteen\");\r\n        setLayout(new BorderLayout());\r\n        add(northPanel, BorderLayout.NORTH);\r\n        add(centerPanel, BorderLayout.CENTER);\r\n        add(southPanel, BorderLayout.SOUTH);\r\n\r\n        northPanel.newGameButton.addActionListener(this);\r\n        northPanel.chngeSizeOnGame.addActionListener(this);\r\n        northPanel.changeColorOnGameButton.addActionListener(this);\r\n        northPanel.changeColorOnNumbersButton.addActionListener(this);\r\n\r\n        southPanel.timer.start();\r\n\r\n        int gridSize = centerPanel.dimensionArray.length;\r\n        for (int i = 0; i < gridSize; i++) {\r\n            for (int j = 0; j < gridSize; j++) {\r\n                centerPanel.dimensionArray[i][j].addActionListener(this);\r\n            }\r\n        }\r\n\r\n        pack();\r\n        setLocationRelativeTo(null);\r\n        setResizable(false);\r\n        setDefaultCloseOperation(EXIT_ON_CLOSE);\r\n        setVisible(true);\r\n    }\r\n\r\n    public void updateMoveCounter() {\r\n        southPanel.moveCounter++;\r\n        southPanel.moveCounterLabel.setText(\"Antal drag: \" + southPanel.moveCounter);\r\n    }\r\n\r\n    @Override\r\n    public void actionPerformed(ActionEvent e) {\r\n        if (isMoveOk(buttonPosition(e.getActionCommand(), centerPanel.dimensionArray))){\r\n            int[] clickedButtonPosition = convertStringToIntArray(buttonPosition(e.getActionCommand(), centerPanel.dimensionArray));\r\n            move1(clickedButtonPosition[0],clickedButtonPosition[1]);\r\n            updateMoveCounter();\r\n            if (checkIfWin.checkIfWinner2(centerPanel.dimensionArray)){\r\n                JOptionPane.showMessageDialog(null, \"Grattis, du vann!\");\r\n            }\r\n        }\r\n        if (e.getSource() == northPanel.newGameButton) {\r\n            centerPanel.initializeButtons2(centerPanel.dimensionArray, centerPanel.buttonList);\r\n            southPanel.seconds = 0;\r\n            southPanel.moveCounter = 0;\r\n        }\r\n        \r\n        if (e.getSource() == northPanel.chngeSizeOnGame){\r\n            \r\n        }\r\n        if (e.getSource() == northPanel.changeColorOnNumbersButton) {\r\n            Color colorSelectorNumbers = JColorChooser.showDialog(null, \"Välj en färg på spelbrickorna\", Color.WHITE);\r\n            if (colorSelectorNumbers != null) {\r\n                Component[] comps = centerPanel.getComponents();\r\n                for (Component comp : comps) {\r\n                    if (comp instanceof JButton b) {\r\n                        b.setBackground(colorSelectorNumbers);\r\n                    }\r\n                }\r\n            }\r\n        }\r\n        if (e.getSource() == northPanel.changeColorOnGameButton) {\r\n            Color colorSelectorGame = JColorChooser.showDialog(null, \"Välj en färg på spelplanen\", Color.BLACK);\r\n            if (colorSelectorGame != null) {\r\n                centerPanel.setBackground(colorSelectorGame);\r\n                northPanel.setBackground(colorSelectorGame);\r\n            }\r\n        }\r\n    }\r\n    public String buttonPosition(String buttonNumber, JButton[][] dimensionArray) {\r\n        String searchString = buttonNumber;\r\n\r\n        int rowPosition = -1;\r\n        int colPosition = -1;\r\n\r\n        for (int i = 0; i < dimensionArray.length; i++) {\r\n            for (int j = 0; j < dimensionArray[i].length; j++) {\r\n                if (dimensionArray[i][j].getText().equals(searchString)) {\r\n                    rowPosition = i;\r\n                    colPosition = j;\r\n                    break;\r\n                }\r\n            }\r\n            if (rowPosition != -1) {\r\n                break;\r\n            }\r\n        }\r\n        return rowPosition + \":\"+ colPosition;\r\n    }\r\n    public boolean isMoveOk(String clickedButtonPosition){\r\n        boolean returnboolean = false;\r\n\r\n        int[] clickedbuttonPositionParts = convertStringToIntArray(clickedButtonPosition);\r\n        int[] blankButtonPosition = convertStringToIntArray(buttonPosition(\" \", centerPanel.dimensionArray));\r\n        if (clickedbuttonPositionParts[0] == (blankButtonPosition[0]) &&\r\n                (blankButtonPosition[1] == clickedbuttonPositionParts[1] + 1 ||\r\n                blankButtonPosition[1] == clickedbuttonPositionParts[1] - 1 )) {\r\n            returnboolean = true;\r\n        } else if (clickedbuttonPositionParts[1] == (blankButtonPosition[1]) &&\r\n                (blankButtonPosition[0] == clickedbuttonPositionParts[0] + 1 ||\r\n                blankButtonPosition[0] == clickedbuttonPositionParts[0] - 1 )) {\r\n            returnboolean = true;\r\n        }\r\n        return returnboolean;\r\n    }\r\n    public static int[] convertStringToIntArray(String input) {\r\n        String[] parts = input.split(\":\");\r\n        int[] intArray = new int[parts.length];\r\n\r\n        for (int i = 0; i < parts.length; i++) {\r\n            intArray[i] = Integer.parseInt(parts[i]);\r\n        }\r\n\r\n        return intArray;\r\n    }\r\n    public void move1(int a, int b){\r\n        int[] blankButtonPosition = convertStringToIntArray(buttonPosition(\" \", centerPanel.dimensionArray));\r\n        centerPanel.dimensionArray[blankButtonPosition[0]][blankButtonPosition[1]].setText(centerPanel.dimensionArray[a][b].getText());\r\n        centerPanel.dimensionArray[a][b].setText(\" \");\r\n        centerPanel.dimensionArray[a][b].setVisible(false);\r\n        centerPanel.dimensionArray[blankButtonPosition[0]][blankButtonPosition[1]].setVisible(true);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Main.java b/src/Main.java
+--- a/src/Main.java	(revision bf5abd8cfd5b63c8a2d95ef861f458f8d7774150)
++++ b/src/Main.java	(date 1698828108067)
+@@ -44,8 +44,8 @@
+     }
+ 
+     public void updateMoveCounter() {
+-        southPanel.moveCounter++;
+-        southPanel.moveCounterLabel.setText("Antal drag: " + southPanel.moveCounter);
++        southPanel.setMoveCounter(southPanel.getMoveCounter() + 1);
++        southPanel.moveCounterLabel.setText("Antal drag: " + southPanel.getMoveCounter());
+     }
+ 
+     @Override
+@@ -64,7 +64,7 @@
+             southPanel.moveCounter = 0;
+         }
+         
+-        if (e.getSource() == northPanel.chngeSizeOnGame){
++        if (e.getSource() == northPanel.changeSizeOnGame){
+             
+         }
+         if (e.getSource() == northPanel.changeColorOnNumbersButton) {
+Index: src/centerPanel.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import javax.swing.*;\r\nimport java.awt.*;\r\nimport java.util.ArrayList;\r\nimport java.util.Collections;\r\n\r\npublic class centerPanel extends JPanel {\r\n    \r\n    int rows = 4;\r\n    int colums = 4;\r\n    JButton[][] dimensionArray = new JButton[rows][colums];\r\n    ArrayList<JButton> buttonList = new ArrayList<>();\r\n\r\n    public centerPanel() {\r\n        try {\r\n            UIManager.setLookAndFeel(\"javax.swing.plaf.nimbus.NimbusLookAndFeel\");\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n\r\n        setLayout(new GridLayout(rows, colums));\r\n        \r\n        for (int i = 0; i < 16; i++) {\r\n            JButton boardNumbers = new JButton(String.valueOf(i + 1));\r\n            boardNumbers.setPreferredSize(new Dimension(80, 80));\r\n            buttonList.add(boardNumbers);\r\n        }\r\n\r\n       //Collections.shuffle(buttonList);\r\n        for (JButton b:buttonList) {\r\n            add(b);\r\n        }\r\n\r\n        for (JButton b:buttonList) {\r\n            if(b.getText().equals(String.valueOf(rows * colums))){\r\n                b.setText(\" \");\r\n                b.setVisible(false);\r\n            }\r\n        }\r\n        \r\n        int numberOfButtons = 0;\r\n        for (int i = 0; i < rows; i++) {\r\n            for (int j = 0; j < colums; j++) {\r\n                dimensionArray[i][j] = buttonList.get(numberOfButtons);\r\n                numberOfButtons++;\r\n            }\r\n        }\r\n    }\r\n    public void initializeButtons2(JButton[][] dimensionArray,ArrayList<JButton> buttonList) {\r\n\r\n        Collections.shuffle(buttonList);\r\n        for (JButton b : buttonList) {\r\n            add(b);\r\n        }\r\n\r\n        for (JButton b : buttonList) {\r\n            if (b.getText().equals(String.valueOf(rows * colums))) {\r\n                b.setText(\" \");\r\n                b.setVisible(false);\r\n            }\r\n        }\r\n\r\n        int numberOfButtons = 0;\r\n        for (int i = 0; i < rows; i++) {\r\n            for (int j = 0; j < colums; j++) {\r\n                dimensionArray[i][j] = buttonList.get(numberOfButtons);\r\n                numberOfButtons++;\r\n            }\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/centerPanel.java b/src/centerPanel.java
+--- a/src/centerPanel.java	(revision bf5abd8cfd5b63c8a2d95ef861f458f8d7774150)
++++ b/src/centerPanel.java	(date 1698826499468)
+@@ -5,8 +5,8 @@
+ 
+ public class centerPanel extends JPanel {
+     
+-    int rows = 4;
+-    int colums = 4;
++    private int rows = 4;
++    private int colums = 4;
+     JButton[][] dimensionArray = new JButton[rows][colums];
+     ArrayList<JButton> buttonList = new ArrayList<>();
+ 
+@@ -24,26 +24,7 @@
+             boardNumbers.setPreferredSize(new Dimension(80, 80));
+             buttonList.add(boardNumbers);
+         }
+-
+-       //Collections.shuffle(buttonList);
+-        for (JButton b:buttonList) {
+-            add(b);
+-        }
+-
+-        for (JButton b:buttonList) {
+-            if(b.getText().equals(String.valueOf(rows * colums))){
+-                b.setText(" ");
+-                b.setVisible(false);
+-            }
+-        }
+-        
+-        int numberOfButtons = 0;
+-        for (int i = 0; i < rows; i++) {
+-            for (int j = 0; j < colums; j++) {
+-                dimensionArray[i][j] = buttonList.get(numberOfButtons);
+-                numberOfButtons++;
+-            }
+-        }
++        initializeButtons(dimensionArray,buttonList);
+     }
+     public void initializeButtons2(JButton[][] dimensionArray,ArrayList<JButton> buttonList) {
+ 
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"5dd2a778-8f10-4e56-81bf-8ee08aeb3442\" name=\"Changes\" comment=\"first puch\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/centerPanel.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/centerPanel.java\" afterDir=\"false\" />\r\n    </list>\r\n    <list id=\"66dca3bb-2c96-45b4-a395-5d335f3b7e11\" name=\"Changes by felix\" comment=\"\" />\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"Git.Merge.Settings\">\r\n    <option name=\"BRANCH\" value=\"Johans-branch\" />\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\r\n      <map>\r\n        <entry key=\"$PROJECT_DIR$\" value=\"development\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;JohanJohnsson&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">\r\n    <option name=\"selectedUrlAndAccountId\">\r\n      <UrlAndAccount>\r\n        <option name=\"accountId\" value=\"9b71a83f-d4d5-485b-8911-86666adacb0d\" />\r\n        <option name=\"url\" value=\"https://github.com/FelixDahlberg/GameOfFifteenJohanFelix.git\" />\r\n      </UrlAndAccount>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 1\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2XTWRTLnCEwBDd8Tpxf5vUitMmo\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"WebServerToolWindowFactoryState\": \"false\",\r\n    \"git-widget-placeholder\": \"Johans-branch\",\r\n    \"last_opened_file_path\": \"C:/Users/felix/IdeaProjects/GameOfFifteenJohanFelix/src\",\r\n    \"node.js.detected.package.eslint\": \"true\",\r\n    \"node.js.detected.package.tslint\": \"true\",\r\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\r\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\r\n    \"vue.rearranger.settings.migration\": \"true\"\r\n  }\r\n}]]></component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\felix\\IdeaProjects\\GameOfFifteenJohanFelix\\src\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"Main\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"Main\" />\r\n      <module name=\"GameOfFifteenJohanFelix\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.Main\" />\r\n        <item itemvalue=\"Application.Main\" />\r\n        <item itemvalue=\"Application.Main\" />\r\n        <item itemvalue=\"Application.Main\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"5dd2a778-8f10-4e56-81bf-8ee08aeb3442\" name=\"Changes\" comment=\"\" />\r\n      <created>1698653543568</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1698653543568</updated>\r\n      <workItem from=\"1698653544719\" duration=\"2272000\" />\r\n    </task>\r\n    <task id=\"LOCAL−00001\" summary=\"first puch\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1698653901249</created>\r\n      <option name=\"number\" value=\"LOCAL−00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00001\" />\r\n      <updated>1698653901249</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00002\" summary=\"Adderat knappen new Game\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1698661789472</created>\r\n      <option name=\"number\" value=\"LOCAL−00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00002\" />\r\n      <updated>1698661789472</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"3\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"first puch\" />\r\n    <MESSAGE value=\"Adderat knappen new Game\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Adderat knappen new Game\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision bf5abd8cfd5b63c8a2d95ef861f458f8d7774150)
++++ b/.idea/workspace.xml	(date 1698827600746)
+@@ -5,10 +5,18 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="5dd2a778-8f10-4e56-81bf-8ee08aeb3442" name="Changes" comment="first puch">
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-01_08_51__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-01_08_51__Changes_.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/centerPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/centerPanel.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/northPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/northPanel.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/southPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/southPanel.java" afterDir="false" />
++    </list>
++    <list id="66dca3bb-2c96-45b4-a395-5d335f3b7e11" name="Changes by felix" comment="">
++      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/centerPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/centerPanel.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/northPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/northPanel.java" afterDir="false" />
+     </list>
+-    <list id="66dca3bb-2c96-45b4-a395-5d335f3b7e11" name="Changes by felix" comment="" />
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -38,6 +46,37 @@
+         <option name="url" value="https://github.com/FelixDahlberg/GameOfFifteenJohanFelix.git" />
+       </UrlAndAccount>
+     </option>
++  </component>
++  <component name="LineStatusTrackerManager">
++    <file path="$PROJECT_DIR$/src/centerPanel.java">
++      <ranges>
++        <range start1="7" end1="9" start2="7" end2="9" changelist="5dd2a778-8f10-4e56-81bf-8ee08aeb3442" />
++        <range start1="26" end1="46" start2="26" end2="27" changelist="5dd2a778-8f10-4e56-81bf-8ee08aeb3442" />
++        <range start1="47" end1="48" start2="28" end2="29" changelist="66dca3bb-2c96-45b4-a395-5d335f3b7e11" />
++      </ranges>
++    </file>
++    <file path="$PROJECT_DIR$/src/northPanel.java">
++      <ranges>
++        <range start1="1" end1="1" start2="1" end2="2" changelist="5dd2a778-8f10-4e56-81bf-8ee08aeb3442" />
++        <range start1="5" end1="6" start2="6" end2="8" changelist="66dca3bb-2c96-45b4-a395-5d335f3b7e11" />
++        <range start1="7" end1="8" start2="9" end2="10" changelist="66dca3bb-2c96-45b4-a395-5d335f3b7e11" />
++        <range start1="14" end1="15" start2="16" end2="17" changelist="66dca3bb-2c96-45b4-a395-5d335f3b7e11" />
++        <range start1="18" end1="18" start2="20" end2="24" changelist="5dd2a778-8f10-4e56-81bf-8ee08aeb3442" />
++        <range start1="26" end1="26" start2="32" end2="58" changelist="66dca3bb-2c96-45b4-a395-5d335f3b7e11" />
++      </ranges>
++    </file>
++    <file path="$PROJECT_DIR$/src/Main.java">
++      <ranges>
++        <range start1="24" end1="26" start2="24" end2="26" changelist="66dca3bb-2c96-45b4-a395-5d335f3b7e11" />
++        <range start1="27" end1="28" start2="27" end2="28" changelist="5dd2a778-8f10-4e56-81bf-8ee08aeb3442" />
++        <range start1="46" end1="48" start2="46" end2="48" changelist="5dd2a778-8f10-4e56-81bf-8ee08aeb3442" />
++        <range start1="54" end1="55" start2="54" end2="55" changelist="66dca3bb-2c96-45b4-a395-5d335f3b7e11" />
++        <range start1="60" end1="64" start2="60" end2="64" changelist="66dca3bb-2c96-45b4-a395-5d335f3b7e11" />
++        <range start1="66" end1="67" start2="66" end2="67" changelist="5dd2a778-8f10-4e56-81bf-8ee08aeb3442" />
++        <range start1="86" end1="87" start2="86" end2="87" changelist="66dca3bb-2c96-45b4-a395-5d335f3b7e11" />
++        <range start1="134" end1="135" start2="134" end2="135" changelist="66dca3bb-2c96-45b4-a395-5d335f3b7e11" />
++      </ranges>
++    </file>
+   </component>
+   <component name="ProjectColorInfo">{
+   &quot;associatedIndex&quot;: 1
+@@ -48,20 +87,20 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "RunOnceActivity.OpenProjectViewOnStart": "true",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "WebServerToolWindowFactoryState": "false",
+-    "git-widget-placeholder": "Johans-branch",
+-    "last_opened_file_path": "C:/Users/felix/IdeaProjects/GameOfFifteenJohanFelix/src",
+-    "node.js.detected.package.eslint": "true",
+-    "node.js.detected.package.tslint": "true",
+-    "node.js.selected.package.eslint": "(autodetect)",
+-    "node.js.selected.package.tslint": "(autodetect)",
+-    "vue.rearranger.settings.migration": "true"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
++    &quot;git-widget-placeholder&quot;: &quot;Johans-branch&quot;,
++    &quot;last_opened_file_path&quot;: &quot;C:/Users/felix/IdeaProjects/GameOfFifteenJohanFelix/src&quot;,
++    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
++    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
++    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
++    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
++    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+   }
+-}]]></component>
++}</component>
+   <component name="RecentsManager">
+     <key name="CopyFile.RECENT_KEYS">
+       <recent name="C:\Users\felix\IdeaProjects\GameOfFifteenJohanFelix\src" />
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-01_09_01_[Changes]/shelved.patch
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-01_09_01_[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-01_09_01_[Changes]/shelved.patch
+new file mode 100644
+--- /dev/null	(date 1698825705845)
++++ b/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-01_09_01_[Changes]/shelved.patch	(date 1698825705845)
+@@ -0,0 +1,80 @@
++Index: src/Main.java
++IDEA additional info:
++Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
++<+>import javax.swing.*;\r\nimport java.awt.*;\r\nimport java.awt.event.ActionEvent;\r\nimport java.awt.event.ActionListener;\r\nimport java.util.ArrayList;\r\nimport java.util.Collections;\r\n\r\npublic class Main extends JFrame implements ActionListener {\r\n    public static void main(String[] args) {\r\n        new Main();\r\n    }\r\n\r\n    northPanel northPanel = new northPanel();\r\n    centerPanel centerPanel = new centerPanel();\r\n    southPanel southPanel = new southPanel();\r\n\r\n\r\n    Main() {\r\n        setTitle(\"Game Of Fifteen\");\r\n        setLayout(new BorderLayout());\r\n        add(northPanel, BorderLayout.NORTH);\r\n        add(centerPanel, BorderLayout.CENTER);\r\n        add(southPanel, BorderLayout.SOUTH);\r\n\r\n        northPanel.newGameButton.addActionListener(this);\r\n        northPanel.chngeSizeOnGame.addActionListener(this);\r\n        northPanel.changeColorOnGameButton.addActionListener(this);\r\n        northPanel.changeColorOnNumbersButton.addActionListener(this);\r\n\r\n        southPanel.timer.start();\r\n\r\n        int gridSize = centerPanel.dimensionArray.length;\r\n        for (int i = 0; i < gridSize; i++) {\r\n            for (int j = 0; j < gridSize; j++) {\r\n                centerPanel.dimensionArray[i][j].addActionListener(this);\r\n            }\r\n        }\r\n\r\n        pack();\r\n        setLocationRelativeTo(null);\r\n        setResizable(false);\r\n        setDefaultCloseOperation(EXIT_ON_CLOSE);\r\n        setVisible(true);\r\n    }\r\n\r\n    public void updateMoveCounter() {\r\n        southPanel.moveCounter++;\r\n        southPanel.moveCounterLabel.setText(\"Antal drag: \" + southPanel.moveCounter);\r\n    }\r\n\r\n    @Override\r\n    public void actionPerformed(ActionEvent e) {\r\n        if (isMoveOk(buttonPosition(e.getActionCommand(), centerPanel.dimensionArray))) {\r\n            int[] clickedButtonPosition = convertStringToIntArray(buttonPosition(e.getActionCommand(), centerPanel.dimensionArray));\r\n            move1(clickedButtonPosition[0], clickedButtonPosition[1]);\r\n            updateMoveCounter();\r\n            if (checkIfWin.checkIfWinner2(centerPanel.dimensionArray)) {\r\n                System.out.println(\"du vann\");\r\n            }\r\n        }\r\n        if (e.getSource() == northPanel.newGameButton) {\r\n            centerPanel.initializeButtons2(centerPanel.dimensionArray, centerPanel.buttonList);\r\n            southPanel.seconds = 0;\r\n            southPanel.moveCounter = 0;\r\n        }\r\n\r\n        if (e.getSource() == northPanel.chngeSizeOnGame) {\r\n\r\n        }\r\n        if (e.getSource() == northPanel.changeColorOnNumbersButton) {\r\n            Color colorSelectorNumbers = JColorChooser.showDialog(null, \"Välj en färg på spelbrickorna\", Color.WHITE);\r\n            if (colorSelectorNumbers != null) {\r\n                Component[] comps = centerPanel.getComponents();\r\n                for (Component comp : comps) {\r\n                    if (comp instanceof JButton b) {\r\n                        b.setBackground(colorSelectorNumbers);\r\n                    }\r\n                }\r\n            }\r\n        }\r\n        if (e.getSource() == northPanel.changeColorOnGameButton) {\r\n            Color colorSelectorGame = JColorChooser.showDialog(null, \"Välj en färg på spelplanen\", Color.BLACK);\r\n            if (colorSelectorGame != null) {\r\n                centerPanel.setBackground(colorSelectorGame);\r\n                northPanel.setBackground(colorSelectorGame);\r\n            }\r\n        }\r\n    }\r\n\r\n    public String buttonPosition(String buttonNumber, JButton[][] dimensionArray) {\r\n        String searchString = buttonNumber;\r\n\r\n        int rowPosition = -1;\r\n        int colPosition = -1;\r\n\r\n        for (int i = 0; i < dimensionArray.length; i++) {\r\n            for (int j = 0; j < dimensionArray[i].length; j++) {\r\n                if (dimensionArray[i][j].getText().equals(searchString)) {\r\n                    rowPosition = i;\r\n                    colPosition = j;\r\n                    break;\r\n                }\r\n            }\r\n            if (rowPosition != -1) {\r\n                break;\r\n            }\r\n        }\r\n        return rowPosition + \":\" + colPosition;\r\n    }\r\n\r\n    public boolean isMoveOk(String clickedButtonPosition) {\r\n        boolean returnboolean = false;\r\n\r\n        int[] clickedbuttonPositionParts = convertStringToIntArray(clickedButtonPosition);\r\n        int[] blankButtonPosition = convertStringToIntArray(buttonPosition(\" \", centerPanel.dimensionArray));\r\n        if (clickedbuttonPositionParts[0] == (blankButtonPosition[0]) &&\r\n                (blankButtonPosition[1] == clickedbuttonPositionParts[1] + 1 ||\r\n                        blankButtonPosition[1] == clickedbuttonPositionParts[1] - 1)) {\r\n            returnboolean = true;\r\n        } else if (clickedbuttonPositionParts[1] == (blankButtonPosition[1]) &&\r\n                (blankButtonPosition[0] == clickedbuttonPositionParts[0] + 1 ||\r\n                        blankButtonPosition[0] == clickedbuttonPositionParts[0] - 1)) {\r\n            returnboolean = true;\r\n        }\r\n        return returnboolean;\r\n    }\r\n\r\n    public static int[] convertStringToIntArray(String input) {\r\n        String[] parts = input.split(\":\");\r\n        int[] intArray = new int[parts.length];\r\n\r\n        for (int i = 0; i < parts.length; i++) {\r\n            intArray[i] = Integer.parseInt(parts[i]);\r\n        }\r\n\r\n        return intArray;\r\n    }\r\n\r\n    public void move1(int a, int b) {\r\n        int[] blankButtonPosition = convertStringToIntArray(buttonPosition(\" \", centerPanel.dimensionArray));\r\n        centerPanel.dimensionArray[blankButtonPosition[0]][blankButtonPosition[1]].setText(centerPanel.dimensionArray[a][b].getText());\r\n        centerPanel.dimensionArray[a][b].setText(\" \");\r\n        centerPanel.dimensionArray[a][b].setVisible(false);\r\n        centerPanel.dimensionArray[blankButtonPosition[0]][blankButtonPosition[1]].setVisible(true);\r\n    }\r\n}\r\n
++Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
++<+>UTF-8
++===================================================================
++diff --git a/src/Main.java b/src/Main.java
++--- a/src/Main.java	(revision 8a1ee41710c0f7b314d37471dc69236bcc91cf01)
+++++ b/src/Main.java	(date 1698825659286)
++@@ -55,7 +55,7 @@
++             move1(clickedButtonPosition[0], clickedButtonPosition[1]);
++             updateMoveCounter();
++             if (checkIfWin.checkIfWinner2(centerPanel.dimensionArray)) {
++-                System.out.println("du vann");
+++                JOptionPane.showMessageDialog(null, "Grattis du vann!");
++             }
++         }
++         if (e.getSource() == northPanel.newGameButton) {
++Index: src/centerPanel.java
++IDEA additional info:
++Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
++<+>import javax.swing.*;\r\nimport java.awt.*;\r\nimport java.util.ArrayList;\r\nimport java.util.Collections;\r\n\r\npublic class centerPanel extends JPanel {\r\n\r\n    int rows = 4;\r\n    int colums = 4;\r\n    JButton[][] dimensionArray = new JButton[rows][colums];\r\n    ArrayList<JButton> buttonList = new ArrayList<>();\r\n\r\n    public centerPanel() {\r\n        try {\r\n            UIManager.setLookAndFeel(\"javax.swing.plaf.nimbus.NimbusLookAndFeel\");\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n\r\n        setLayout(new GridLayout(rows, colums));\r\n\r\n        for (int i = 0; i < 16; i++) {\r\n            JButton boardNumbers = new JButton(String.valueOf(i + 1));\r\n            boardNumbers.setPreferredSize(new Dimension(80, 80));\r\n            buttonList.add(boardNumbers);\r\n        }\r\n\r\n        //Collections.shuffle(buttonList);\r\n        for (JButton b : buttonList) {\r\n            add(b);\r\n        }\r\n\r\n        for (JButton b : buttonList) {\r\n            if (b.getText().equals(String.valueOf(rows * colums))) {\r\n                b.setText(\" \");\r\n                b.setVisible(false);\r\n            }\r\n        }\r\n\r\n        int numberOfButtons = 0;\r\n        for (int i = 0; i < rows; i++) {\r\n            for (int j = 0; j < colums; j++) {\r\n                dimensionArray[i][j] = buttonList.get(numberOfButtons);\r\n                numberOfButtons++;\r\n            }\r\n        }\r\n    }\r\n\r\n    public void initializeButtons2(JButton[][] dimensionArray, ArrayList<JButton> buttonList) {\r\n\r\n        Collections.shuffle(buttonList);\r\n        for (JButton b : buttonList) {\r\n            add(b);\r\n        }\r\n\r\n        for (JButton b : buttonList) {\r\n            if (b.getText().equals(String.valueOf(rows * colums))) {\r\n                b.setText(\" \");\r\n                b.setVisible(false);\r\n            }\r\n        }\r\n\r\n        int numberOfButtons = 0;\r\n        for (int i = 0; i < rows; i++) {\r\n            for (int j = 0; j < colums; j++) {\r\n                dimensionArray[i][j] = buttonList.get(numberOfButtons);\r\n                numberOfButtons++;\r\n            }\r\n        }\r\n    }\r\n}
++Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
++<+>UTF-8
++===================================================================
++diff --git a/src/centerPanel.java b/src/centerPanel.java
++--- a/src/centerPanel.java	(revision 8a1ee41710c0f7b314d37471dc69236bcc91cf01)
+++++ b/src/centerPanel.java	(date 1698825621883)
++@@ -4,7 +4,7 @@
++ import java.util.Collections;
++ 
++ public class centerPanel extends JPanel {
++-
+++    
++     int rows = 4;
++     int colums = 4;
++     JButton[][] dimensionArray = new JButton[rows][colums];
++@@ -18,25 +18,25 @@
++         }
++ 
++         setLayout(new GridLayout(rows, colums));
++-
+++        
++         for (int i = 0; i < 16; i++) {
++             JButton boardNumbers = new JButton(String.valueOf(i + 1));
++             boardNumbers.setPreferredSize(new Dimension(80, 80));
++             buttonList.add(boardNumbers);
++         }
++ 
++-        //Collections.shuffle(buttonList);
++-        for (JButton b : buttonList) {
+++       Collections.shuffle(buttonList);
+++        for (JButton b:buttonList) {
++             add(b);
++         }
++ 
++-        for (JButton b : buttonList) {
++-            if (b.getText().equals(String.valueOf(rows * colums))) {
+++        for (JButton b:buttonList) {
+++            if(b.getText().equals(String.valueOf(rows * colums))){
++                 b.setText(" ");
++                 b.setVisible(false);
++             }
++         }
++-
+++        
++         int numberOfButtons = 0;
++         for (int i = 0; i < rows; i++) {
++             for (int j = 0; j < colums; j++) {
++@@ -45,8 +45,7 @@
++             }
++         }
++     }
++-
++-    public void initializeButtons2(JButton[][] dimensionArray, ArrayList<JButton> buttonList) {
+++    public void initializeButtons2(JButton[][] dimensionArray,ArrayList<JButton> buttonList) {
++ 
++         Collections.shuffle(buttonList);
++         for (JButton b : buttonList) {
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-01_09_00__Changes_.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-01_09_00__Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-01_09_00__Changes_.xml
+new file mode 100644
+--- /dev/null	(date 1698826112410)
++++ b/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-01_09_00__Changes_.xml	(date 1698826112410)
+@@ -0,0 +1,4 @@
++<changelist name="Uncommitted_changes_before_Checkout_at_2023-11-01_09_00_[Changes]" date="1698825621932" recycled="true" deleted="true">
++  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-01_09_00_[Changes]/shelved.patch" />
++  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 2023-11-01 09:00 [Changes]" />
++</changelist>
+\ No newline at end of file
+Index: src/southPanel.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import javax.swing.*;\r\n\r\n\r\npublic class southPanel extends JPanel {\r\n    \r\n    int moveCounter = 0;\r\n    JLabel moveCounterLabel = new JLabel(\"Antal drag: \" + moveCounter);\r\n    JLabel timerLabel = new JLabel(\"Time: 0\");\r\n    Timer timer;\r\n\r\n    int seconds = 0;\r\n    \r\n    southPanel(){\r\n        \r\n        add(moveCounterLabel);\r\n        add(timerLabel);\r\n        \r\n        timer = new Timer(1000, e -> {\r\n            \r\n                seconds++;\r\n                timerLabel.setText(\"Timer: \" + seconds);\r\n            \r\n        });\r\n        \r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/southPanel.java b/src/southPanel.java
+--- a/src/southPanel.java	(revision bf5abd8cfd5b63c8a2d95ef861f458f8d7774150)
++++ b/src/southPanel.java	(date 1698828352758)
+@@ -3,12 +3,28 @@
+ 
+ public class southPanel extends JPanel {
+     
+-    int moveCounter = 0;
++    private int moveCounter = 0;
++    private int seconds = 0;
+     JLabel moveCounterLabel = new JLabel("Antal drag: " + moveCounter);
+     JLabel timerLabel = new JLabel("Time: 0");
+     Timer timer;
+ 
+-    int seconds = 0;
++    public int getMoveCounter() {
++        return moveCounter;
++    }
++
++    public void setMoveCounter(int moveCounter) {
++        this.moveCounter = moveCounter;
++    }
++
++    public int getSeconds() {
++        return seconds;
++    }
++
++    public void setSeconds(int seconds) {
++        this.seconds = seconds;
++    }
++
+     
+     southPanel(){
+         
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-01_09_00_[Changes]/shelved.patch
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-01_09_00_[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-01_09_00_[Changes]/shelved.patch
+new file mode 100644
+--- /dev/null	(date 1698825612455)
++++ b/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-01_09_00_[Changes]/shelved.patch	(date 1698825612455)
+@@ -0,0 +1,19 @@
++Index: src/centerPanel.java
++IDEA additional info:
++Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
++<+>import javax.swing.*;\r\nimport java.awt.*;\r\nimport java.util.ArrayList;\r\nimport java.util.Collections;\r\n\r\npublic class centerPanel extends JPanel {\r\n    \r\n    int rows = 4;\r\n    int colums = 4;\r\n    JButton[][] dimensionArray = new JButton[rows][colums];\r\n    ArrayList<JButton> buttonList = new ArrayList<>();\r\n\r\n    public centerPanel() {\r\n        try {\r\n            UIManager.setLookAndFeel(\"javax.swing.plaf.nimbus.NimbusLookAndFeel\");\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n\r\n        setLayout(new GridLayout(rows, colums));\r\n        \r\n        for (int i = 0; i < 16; i++) {\r\n            JButton boardNumbers = new JButton(String.valueOf(i + 1));\r\n            boardNumbers.setPreferredSize(new Dimension(80, 80));\r\n            buttonList.add(boardNumbers);\r\n        }\r\n\r\n       //Collections.shuffle(buttonList);\r\n        for (JButton b:buttonList) {\r\n            add(b);\r\n        }\r\n\r\n        for (JButton b:buttonList) {\r\n            if(b.getText().equals(String.valueOf(rows * colums))){\r\n                b.setText(\" \");\r\n                b.setVisible(false);\r\n            }\r\n        }\r\n        \r\n        int numberOfButtons = 0;\r\n        for (int i = 0; i < rows; i++) {\r\n            for (int j = 0; j < colums; j++) {\r\n                dimensionArray[i][j] = buttonList.get(numberOfButtons);\r\n                numberOfButtons++;\r\n            }\r\n        }\r\n    }\r\n    public void initializeButtons2(JButton[][] dimensionArray,ArrayList<JButton> buttonList) {\r\n\r\n        Collections.shuffle(buttonList);\r\n        for (JButton b : buttonList) {\r\n            add(b);\r\n        }\r\n\r\n        for (JButton b : buttonList) {\r\n            if (b.getText().equals(String.valueOf(rows * colums))) {\r\n                b.setText(\" \");\r\n                b.setVisible(false);\r\n            }\r\n        }\r\n\r\n        int numberOfButtons = 0;\r\n        for (int i = 0; i < rows; i++) {\r\n            for (int j = 0; j < colums; j++) {\r\n                dimensionArray[i][j] = buttonList.get(numberOfButtons);\r\n                numberOfButtons++;\r\n            }\r\n        }\r\n    }\r\n}
++Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
++<+>UTF-8
++===================================================================
++diff --git a/src/centerPanel.java b/src/centerPanel.java
++--- a/src/centerPanel.java	(revision bf5abd8cfd5b63c8a2d95ef861f458f8d7774150)
+++++ b/src/centerPanel.java	(date 1698825610271)
++@@ -25,7 +25,7 @@
++             buttonList.add(boardNumbers);
++         }
++ 
++-       //Collections.shuffle(buttonList);
+++       Collections.shuffle(buttonList);
++         for (JButton b:buttonList) {
++             add(b);
++         }
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-01_09_01__Changes_.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-01_09_01__Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-01_09_01__Changes_.xml
+new file mode 100644
+--- /dev/null	(date 1698826112424)
++++ b/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-01_09_01__Changes_.xml	(date 1698826112424)
+@@ -0,0 +1,4 @@
++<changelist name="Uncommitted_changes_before_Checkout_at_2023-11-01_09_01_[Changes]" date="1698825719728" recycled="true" deleted="true">
++  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023-11-01_09_01_[Changes]/shelved.patch" />
++  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 2023-11-01 09:01 [Changes]" />
++</changelist>
+\ No newline at end of file
