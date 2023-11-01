@@ -48,7 +48,8 @@ public class Main extends JFrame implements ActionListener {
             moveButton(clickedButtonPosition[0],clickedButtonPosition[1]);
             updateMoveCounter();
             if (checkIfWin.checkIfWinner2(centerPanel.dimensionArray)){
-                JOptionPane.showMessageDialog(null, "Grattis, du vann!\n Du gjorde det på " + southPanel.getMoveCounter() + " drag och " + southPanel.getSeconds() + " sekunder");
+                JOptionPane.showMessageDialog(null, "Grattis, du vann!\n" +
+                        " Du gjorde det på " + southPanel.getMoveCounter() + " drag och " + southPanel.getSeconds() + " sekunder");
             }
         }
         if (e.getSource() == northPanel.newGameButton) {
@@ -59,7 +60,10 @@ public class Main extends JFrame implements ActionListener {
         
         if (e.getSource() == northPanel.changeSizeOnGame){
             try {
-                int gameSize = Integer.parseInt(JOptionPane.showInputDialog("hur stor?"));
+                int gameSize = Integer.parseInt(JOptionPane.showInputDialog("Hur stor plan vill du spela?"));
+                if (gameSize < 1){
+                    JOptionPane.showMessageDialog(null,"siffran måste vara 2 eller större");
+                }
                 centerPanel.rows = gameSize;
                 centerPanel.colums = gameSize;
                 centerPanel.dimensionArray = new JButton[gameSize][gameSize];
@@ -70,7 +74,7 @@ public class Main extends JFrame implements ActionListener {
                 southPanel.setSeconds(0);
                 southPanel.setMoveCounter(0);
             }catch (NumberFormatException a){
-                JOptionPane.showMessageDialog(null,"måste vara siffra");
+                JOptionPane.showMessageDialog(null,"Måste vara en siffra");
                 a.printStackTrace();
             }
         }

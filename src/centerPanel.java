@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class centerPanel extends JPanel  {
-    
     int rows = 5;
     int colums = rows;
     JButton[][] dimensionArray = new JButton[rows][colums];
@@ -52,25 +51,7 @@ public class centerPanel extends JPanel  {
             buttonList.add(boardNumbers);
         }
 
-        Collections.shuffle(buttonList);
-        for (JButton b:buttonList) {
-            add(b);
-        }
-
-        for (JButton b:buttonList) {
-            if(b.getText().equals(String.valueOf(rows * colums))){
-                b.setText(" ");
-                b.setVisible(false);
-            }
-        }
-
-        int numberOfButtons = 0;
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < colums; j++) {
-                dimensionArray[i][j] = buttonList.get(numberOfButtons);
-                numberOfButtons++;
-            }
-        }
+        initializeButtons(dimensionArray,buttonList);
     }
 
 
