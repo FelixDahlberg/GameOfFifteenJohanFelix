@@ -5,8 +5,8 @@ import java.util.Collections;
 
 public class centerPanel extends JPanel {
     
-    private int rows = 4;
-    private int colums = 4;
+    int rows = 4;
+    int colums = 4;
     JButton[][] dimensionArray = new JButton[rows][colums];
     ArrayList<JButton> buttonList = new ArrayList<>();
 
@@ -24,9 +24,28 @@ public class centerPanel extends JPanel {
             boardNumbers.setPreferredSize(new Dimension(80, 80));
             buttonList.add(boardNumbers);
         }
-        initializeButtons(dimensionArray,buttonList);
+
+       //Collections.shuffle(buttonList);
+        for (JButton b:buttonList) {
+            add(b);
+        }
+
+        for (JButton b:buttonList) {
+            if(b.getText().equals(String.valueOf(rows * colums))){
+                b.setText(" ");
+                b.setVisible(false);
+            }
+        }
+        
+        int numberOfButtons = 0;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < colums; j++) {
+                dimensionArray[i][j] = buttonList.get(numberOfButtons);
+                numberOfButtons++;
+            }
+        }
     }
-    public void initializeButtons(JButton[][] dimensionArray,ArrayList<JButton> buttonList) {
+    public void initializeButtons2(JButton[][] dimensionArray,ArrayList<JButton> buttonList) {
 
         Collections.shuffle(buttonList);
         for (JButton b : buttonList) {
