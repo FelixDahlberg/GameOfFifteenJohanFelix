@@ -52,7 +52,7 @@ public class Main extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (isMoveOk(buttonPosition(e.getActionCommand(), centerPanel.dimensionArray))){
             int[] clickedButtonPosition = convertStringToIntArray(buttonPosition(e.getActionCommand(), centerPanel.dimensionArray));
-            moveButton(clickedButtonPosition[0],clickedButtonPosition[1]);
+            move1(clickedButtonPosition[0],clickedButtonPosition[1]);
             updateMoveCounter();
             if (checkIfWin.checkIfWinner2(centerPanel.dimensionArray)){
                 JOptionPane.showMessageDialog(null, "Grattis, du vann!");
@@ -64,7 +64,7 @@ public class Main extends JFrame implements ActionListener {
             southPanel.setMoveCounter(0);
         }
         
-        if (e.getSource() == northPanel.changeSizeOnGame){
+        if (e.getSource() == northPanel.chngeSizeOnGame){
             
         }
         if (e.getSource() == northPanel.changeColorOnNumbersButton) {
