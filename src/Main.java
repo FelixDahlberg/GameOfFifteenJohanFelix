@@ -55,7 +55,7 @@ public class Main extends JFrame implements ActionListener {
             move1(clickedButtonPosition[0],clickedButtonPosition[1]);
             updateMoveCounter();
             if (checkIfWin.checkIfWinner2(centerPanel.dimensionArray)){
-                System.out.println("du vann");
+                JOptionPane.showMessageDialog(null, "Grattis, du vann!");
             }
         }
         if (e.getSource() == northPanel.newGameButton) {
