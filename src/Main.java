@@ -28,13 +28,7 @@ public class Main extends JFrame implements ActionListener {
         northPanel.changeColorOnNumbersButton.addActionListener(this);
 
         southPanel.timer.start();
-
-        int gridSize = centerPanel.dimensionArray.length;
-        for (int i = 0; i < gridSize; i++) {
-            for (int j = 0; j < gridSize; j++) {
-                centerPanel.dimensionArray[i][j].addActionListener(this);
-            }
-        }
+        addActionlistenerToArrayButtons(centerPanel.dimensionArray);
         pack();
         setLocationRelativeTo(null);
         setResizable(false);
@@ -54,7 +48,7 @@ public class Main extends JFrame implements ActionListener {
             moveButton(clickedButtonPosition[0],clickedButtonPosition[1]);
             updateMoveCounter();
             if (checkIfWin.checkIfWinner2(centerPanel.dimensionArray)){
-                JOptionPane.showMessageDialog(null, "Grattis, du vann!");
+                JOptionPane.showMessageDialog(null, "Grattis, du vann!\n Du gjorde det på " + southPanel.getMoveCounter() + " drag och " + southPanel.getSeconds() + " sekunder");
             }
         }
         if (e.getSource() == northPanel.newGameButton) {
@@ -63,7 +57,7 @@ public class Main extends JFrame implements ActionListener {
             southPanel.setMoveCounter(0);
         }
         
-        if (e.getSource() == northPanel.chngeSizeOnGame){
+        if (e.getSource() == northPanel.changeSizeOnGame){
             try {
                 int gameSize = Integer.parseInt(JOptionPane.showInputDialog("hur stor?"));
                 centerPanel.rows = gameSize;
@@ -73,8 +67,8 @@ public class Main extends JFrame implements ActionListener {
                 centerPanel.removeAll();
                 centerPanel.createNewButtons(centerPanel.dimensionArray, centerPanel.buttonList,gameSize,gameSize);
                 addActionlistenerToArrayButtons(centerPanel.dimensionArray);
-                southPanel.seconds = 0;
-                southPanel.moveCounter = 0;
+                southPanel.setSeconds(0);
+                southPanel.setMoveCounter(0);
             }catch (NumberFormatException a){
                 JOptionPane.showMessageDialog(null,"måste vara siffra");
                 a.printStackTrace();
