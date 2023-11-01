@@ -29,12 +29,13 @@ public class Main extends JFrame implements ActionListener {
 
         southPanel.timer.start();
 
-        int gridSize = centerPanel.dimensionArray.length;
+        addActionlistenerToArrayButtons(centerPanel.dimensionArray);
+        /*int gridSize = centerPanel.dimensionArray.length;
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
                 centerPanel.dimensionArray[i][j].addActionListener(this);
             }
-        }
+        }*/
 
         pack();
         setLocationRelativeTo(null);
@@ -65,7 +66,21 @@ public class Main extends JFrame implements ActionListener {
         }
         
         if (e.getSource() == northPanel.chngeSizeOnGame){
-            
+            try {
+                int gameSize = Integer.parseInt(JOptionPane.showInputDialog("hur stor?"));
+                centerPanel.rows = gameSize;
+                centerPanel.colums = gameSize;
+                centerPanel.dimensionArray = new JButton[gameSize][gameSize];
+                centerPanel.buttonList = new ArrayList<>();
+                centerPanel.removeAll();
+                centerPanel.createNewButtons(centerPanel.dimensionArray, centerPanel.buttonList,gameSize,gameSize);
+                addActionlistenerToArrayButtons(centerPanel.dimensionArray);
+                southPanel.seconds = 0;
+                southPanel.moveCounter = 0;
+            }catch (NumberFormatException a){
+                JOptionPane.showMessageDialog(null,"måste vara siffra");
+                a.printStackTrace();
+            }
         }
         if (e.getSource() == northPanel.changeColorOnNumbersButton) {
             Color colorSelectorNumbers = JColorChooser.showDialog(null, "Välj en färg på spelbrickorna", Color.WHITE);
@@ -138,5 +153,13 @@ public class Main extends JFrame implements ActionListener {
         centerPanel.dimensionArray[a][b].setText(" ");
         centerPanel.dimensionArray[a][b].setVisible(false);
         centerPanel.dimensionArray[blankButtonPosition[0]][blankButtonPosition[1]].setVisible(true);
+    }
+    public void addActionlistenerToArrayButtons(JButton[][] dimensionArray){
+        int gridSize = dimensionArray.length;
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                dimensionArray[i][j].addActionListener(this);
+            }
+        }
     }
 }

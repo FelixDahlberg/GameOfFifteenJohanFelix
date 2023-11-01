@@ -3,7 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class northPanel extends JPanel implements ActionListener {
-    
+
     JButton newGameButton = new JButton("New Game");
     JButton chngeSizeOnGame = new JButton("Byt storlek på spelplanen");
     JButton changeColorOnNumbersButton = new JButton("Byt färg på brickorna");
@@ -17,6 +17,7 @@ public class northPanel extends JPanel implements ActionListener {
         add(changeColorOnGameButton);
         add(exitButton);
         exitButton.addActionListener(this);
+        newGameButton.addActionListener(this);
     }
 
     @Override
