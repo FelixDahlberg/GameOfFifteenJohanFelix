@@ -59,7 +59,7 @@ public class Main extends JFrame implements ActionListener {
             }
         }
         if (e.getSource() == northPanel.newGameButton) {
-            centerPanel.initializeButtons2(centerPanel.dimensionArray, centerPanel.buttonList);
+            centerPanel.initializeButtons(centerPanel.dimensionArray, centerPanel.buttonList);
             southPanel.seconds = 0;
             southPanel.moveCounter = 0;
         }
