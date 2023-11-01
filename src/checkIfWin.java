@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 public class checkIfWin {
-    public static boolean checkIfWinner2(JButton[][] dimensionArray) {
+    public static boolean checkIfWinner(JButton[][] dimensionArray) {
         JButton[][] dimensionArrayCopy = copyJButtonArray(dimensionArray);
         boolean returnBoolean = false;
         int gridSize = dimensionArrayCopy.length;

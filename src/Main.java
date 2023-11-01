@@ -47,7 +47,7 @@ public class Main extends JFrame implements ActionListener {
             int[] clickedButtonPosition = convertStringToIntArray(buttonPosition(e.getActionCommand(), centerPanel.dimensionArray));
             moveButton(clickedButtonPosition[0],clickedButtonPosition[1]);
             updateMoveCounter();
-            if (checkIfWin.checkIfWinner2(centerPanel.dimensionArray)){
+            if (checkIfWin.checkIfWinner(centerPanel.dimensionArray)){
                 JOptionPane.showMessageDialog(null, "Grattis, du vann!\n" +
                         " Du gjorde det på " + southPanel.getMoveCounter() + " drag och " + southPanel.getSeconds() + " sekunder");
             }
